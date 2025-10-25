@@ -1,6 +1,6 @@
 import express from 'express';
 import Service from '../models/Service';
-import { protect, admin } from '../middleware/auth';
+import { authenticateToken, authorizeAdmin } from '../middleware/auth';
 
 const router = express.Router();
 
@@ -36,7 +36,7 @@ router.get('/:id', async (req, res) => {
 // @route   POST /api/services
 // @desc    Create a new service
 // @access  Private/Admin
-router.post('/', protect, admin, async (req, res) => {
+router.post('/', authenticateToken, authorizeAdmin, async (req, res) => {
   try {
     const service = new Service(req.body);
     const savedService = await service.save();
@@ -49,7 +49,7 @@ router.post('/', protect, admin, async (req, res) => {
 // @route   PUT /api/services/:id
 // @desc    Update a service
 // @access  Private/Admin
-router.put('/:id', protect, admin, async (req, res) => {
+router.put('/:id', authenticateToken, authorizeAdmin, async (req, res) => {
   try {
     const service = await Service.findByIdAndUpdate(
       req.params.id,
@@ -70,7 +70,7 @@ router.put('/:id', protect, admin, async (req, res) => {
 // @route   DELETE /api/services/:id
 // @desc    Delete a service
 // @access  Private/Admin
-router.delete('/:id', protect, admin, async (req, res) => {
+router.delete('/:id', authenticateToken, authorizeAdmin, async (req, res) => {
   try {
     const service = await Service.findByIdAndDelete(req.params.id);
     
