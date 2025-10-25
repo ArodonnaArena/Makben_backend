@@ -30,6 +30,10 @@ app.use(cors({
     'http://localhost:3000'
   ],
   credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  exposedHeaders: ['Content-Range', 'X-Content-Range'],
+  maxAge: 600, // Cache preflight for 10 minutes
 }));
 app.use(helmet({
   crossOriginResourcePolicy: { policy: 'cross-origin' },
