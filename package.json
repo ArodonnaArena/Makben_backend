@@ -8,6 +8,8 @@
     "build": "tsc",
     "watch": "tsc -w",
     "dev:watch": "nodemon --exec ts-node src/app.ts",
+    "seed:prod": "ts-node src/scripts/seed-production.ts",
+    "reset:admin": "ts-node src/scripts/reset-admin.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
