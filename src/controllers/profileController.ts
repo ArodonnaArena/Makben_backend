@@ -20,7 +20,20 @@ export const getProfile = async (req: AuthRequest, res: Response) => {
 // Create or update profile (admin only)
 export const updateProfile = async (req: AuthRequest, res: Response) => {
   try {
-    const profileData = req.body;
+    const profileData: any = req.body;
+
+    // Parse JSON string fields coming from multipart/form-data
+    const parseIfString = (key: string) => {
+      if (typeof profileData[key] === 'string') {
+        try {
+          profileData[key] = JSON.parse(profileData[key]);
+        } catch (e) {
+          // ignore - leave as-is if not valid JSON
+        }
+      }
+    };
+
+    ['location', 'social', 'skills', 'stats'].forEach(parseIfString);
 
     // Handle uploaded files
     if (req.files) {
