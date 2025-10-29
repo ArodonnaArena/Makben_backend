@@ -33,11 +33,21 @@ export const authenticateToken = (req: AuthRequest, res: Response, next: NextFun
 };
 
 export const authorizeAdmin = (req: AuthRequest, res: Response, next: NextFunction): void => {
-  if (req.user?.role !== 'admin') {
+  if (req.user?.role !== 'admin' && req.user?.role !== 'superadmin') {
     res.status(403).json({ message: 'Admin access required' });
     return;
   }
   next();
+};
+
+export const authorizeRoles = (...roles: string[]) => {
+  return (req: AuthRequest, res: Response, next: NextFunction): void => {
+    if (!req.user || !roles.includes(req.user.role)) {
+      res.status(403).json({ message: 'Insufficient permissions' });
+      return;
+    }
+    next();
+  };
 };
 
 export const generateToken = (payload: { id: string; email: string; role: string }): string => {
